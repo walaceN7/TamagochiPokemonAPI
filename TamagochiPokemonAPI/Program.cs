@@ -28,11 +28,18 @@ while (jogar)
                 Console.WriteLine("===  Escolha um Pokemon  ===");
                 foreach (string nome in nomesDisponiveis)
                 {
-                    Console.WriteLine(nome);
+                    Console.WriteLine($"- {nome}");
                 }
+                Console.WriteLine("\n- VOLTAR");
 
                 Console.Write("\nNome do Pokemon: ");
                 nomePokemon = Console.ReadLine();
+
+                if (nomePokemon.ToUpper() == "VOLTAR")
+                {
+                    opcao = "2";
+                    break;
+                }
                 nomeValido = PokemonService.ValidaNomePokemon(nomesDisponiveis, nomePokemon);
 
                 if (!nomeValido)

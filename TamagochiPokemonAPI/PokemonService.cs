@@ -17,20 +17,7 @@ namespace TamagochiPokemonAPI
 
         public static bool ValidaNomePokemon(List<string> listaDePokemonsDisponiveis, string nomePokemon)
         {
-            foreach (string nome in listaDePokemonsDisponiveis)
-            {
-                if (nomePokemon.Contains(nome, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return true;
-                }
-            }
-
-            //if (!nomePokemon.Contains("BULBASAUR", StringComparison.InvariantCultureIgnoreCase) || !nomePokemon.Contains("CHARMANDER", StringComparison.InvariantCultureIgnoreCase)
-            //    || !nomePokemon.Contains("SQUIRTLE", StringComparison.InvariantCultureIgnoreCase) || !nomePokemon.Contains("PIKACHU", StringComparison.InvariantCultureIgnoreCase))
-            //{ 
-            //    return false;
-            //}
-            return false;
+            return listaDePokemonsDisponiveis.Where(nome => nome == nomePokemon.ToUpper()).FirstOrDefault() != null ? true : false;
         }
     }
 }
