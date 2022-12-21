@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TamagochiPokemonAPI.Models;
+using TamagochiPokemonAPI.Services;
 
-namespace TamagochiPokemonAPI;
+namespace TamagochiPokemonAPI.Views;
 
 public class PokemonInterface
 {
@@ -44,8 +45,8 @@ public class PokemonInterface
         return Console.ReadLine();
     }
 
-    public string MenuAdocao(List<string> nomesPokemons)
-    {
+    public void MenuAdocao(List<string> nomesPokemons)
+    {     
         Console.Clear();
         Console.WriteLine("===  Escolha um Pokemon  ===");
         foreach (string nome in nomesPokemons)
@@ -54,8 +55,7 @@ public class PokemonInterface
         }
         Console.WriteLine("\n- VOLTAR");
 
-        Console.Write("\nOpção: ");
-        return Console.ReadLine();
+        Console.Write("\nOpção: ");       
     }
 
     public string MenuSaberMais(string pokemon)
@@ -84,6 +84,48 @@ public class PokemonInterface
 
         Console.WriteLine("\n\nPrecione ENTER para VOLTAR");
         Console.ReadKey();
+    }   
+
+    public void SucessoAdocao()
+    {
+        Console.Clear();
+        Console.WriteLine($"{NomeJogador} Pokemon ADOTADO COM SUCESSO, O OVO ESTÁ CHOCANDO: ");
+
+        Console.WriteLine(@"
+              ███╗
+             ██████╗
+            ████████╗
+            ████████║
+            ████████║
+            ╚█████╔╝
+             ╚════╝");
+
+        Console.WriteLine("\n\nPrecione ENTER para VOLTAR");
+        Console.ReadKey();
+    }
+
+    public void MenuConsultarMascotes(List<Pokemon> pokemons)
+    {
+        int totalPokemon = pokemons.Count;
+
+
+        Console.Clear();
+        Console.WriteLine($"Você possui {totalPokemon} Pokemon adotados.");
+
+        if(totalPokemon == 0)
+        {
+            Console.WriteLine("\nPRECIONE ENTER PARA VOLTAR");
+            Console.ReadKey();
+            return;
+        }
+
+        for (int indicePokemon = 0; indicePokemon < totalPokemon; indicePokemon++)
+        {
+            Console.WriteLine($"{indicePokemon} - {pokemons[indicePokemon].name.ToUpper()}");
+        }
+
+        Console.WriteLine($"Qual Pokemon você deseja interagir?");
+        MenuDetalhesPokemonAdotado(pokemons[Convert.ToInt32(Console.ReadLine())]);
     }
 
     public void MenuDetalhesPokemonAdotado(Pokemon pokemon)
@@ -115,37 +157,5 @@ public class PokemonInterface
 
         Console.WriteLine("\n\nPrecione ENTER para VOLTAR");
         Console.ReadKey();
-    }
-
-    public void SucessoAdocao()
-    {
-        Console.Clear();
-        Console.WriteLine($"{NomeJogador} Pokemon ADOTADO COM SUCESSO, O OVO ESTÁ CHOCANDO: ");
-
-        Console.WriteLine(@"
-              ███╗
-             ██████╗
-            ████████╗
-            ████████║
-            ████████║
-            ╚█████╔╝
-             ╚════╝");
-
-        Console.WriteLine("\n\nPrecione ENTER para VOLTAR");
-        Console.ReadKey();
-    }
-
-    public int MenuConsultarMascotes(List<Pokemon> Pokemons)
-    {
-        Console.Clear();
-        Console.WriteLine($"Você possui {Pokemons.Count} Pokemon adotados.");
-        
-        for (int indicePokemon = 0; indicePokemon < Pokemons.Count; indicePokemon++)
-        {
-            Console.WriteLine($"{indicePokemon} - {Pokemons[indicePokemon].name.ToUpper()}");
-        }
-
-        Console.WriteLine($"Qual Pokemon você deseja interagir?");
-        return Convert.ToInt32(Console.ReadLine());
     }
 }
