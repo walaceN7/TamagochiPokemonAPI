@@ -28,7 +28,7 @@ public class PokemonController
             switch (opcao)
             {
                 case "1":
-                    opcao = MenuAdocao();
+                    opcao = MenuAdocaoIniciar();
                     break;
                 case "2":
                     menu.MenuConsultarMascotes(pokemons);
@@ -43,7 +43,7 @@ public class PokemonController
         }
     }
 
-    public string MenuAdocao()
+    public string MenuAdocaoIniciar()
     {
         bool nomeValido = false;
         bool continua = true;
