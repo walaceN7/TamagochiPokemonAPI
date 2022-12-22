@@ -46,7 +46,7 @@ public class PokemonInterface
     }
 
     public void MenuAdocao(List<string> nomesPokemons)
-    {     
+    {
         Console.Clear();
         Console.WriteLine("===  Escolha um Pokemon  ===");
         foreach (string nome in nomesPokemons)
@@ -55,7 +55,7 @@ public class PokemonInterface
         }
         Console.WriteLine("\n- VOLTAR");
 
-        Console.Write("\nOpção: ");       
+        Console.Write("\nOpção: ");
     }
 
     public string MenuSaberMais(string pokemon)
@@ -84,7 +84,7 @@ public class PokemonInterface
 
         Console.WriteLine("\n\nPrecione ENTER para VOLTAR");
         Console.ReadKey();
-    }   
+    }
 
     public void SucessoAdocao()
     {
@@ -112,7 +112,7 @@ public class PokemonInterface
         Console.Clear();
         Console.WriteLine($"Você possui {totalPokemon} Pokemon adotados.");
 
-        if(totalPokemon == 0)
+        if (totalPokemon == 0)
         {
             Console.WriteLine("\nPRECIONE ENTER PARA VOLTAR");
             Console.ReadKey();
@@ -125,10 +125,53 @@ public class PokemonInterface
         }
 
         Console.WriteLine($"Qual Pokemon você deseja interagir?");
-        MenuDetalhesPokemonAdotado(pokemons[Convert.ToInt32(Console.ReadLine())]);
+        InteragirPokemon(pokemons[Convert.ToInt32(Console.ReadLine())]);
     }
 
-    public void MenuDetalhesPokemonAdotado(Pokemon pokemon)
+    public void InteragirPokemon(Pokemon pokemon)
+    {
+        string opcao = "";
+        Console.Clear();
+        Console.WriteLine($"{NomeJogador} VOCÊ DESEJA:");
+        Console.WriteLine($"1 - SABER COMO {pokemon.name.ToUpper()} ESTÁ");
+        Console.WriteLine($"2 - ALIMENTAR O(A) {pokemon.name.ToUpper()}");
+        Console.WriteLine($"3 - BRINCAR COM {pokemon.name.ToUpper()}");
+        Console.WriteLine($"4 - FAZER O(A) {pokemon.name.ToUpper()} DORMIR");
+        Console.WriteLine($"5 - VOLTAR");
+
+        Console.Write("Sua escolha: ");
+        opcao = Console.ReadLine();
+
+        switch (opcao)
+        {
+            case "1":
+                MenuDetalhesPokemonAdotado(pokemon);
+                InteragirPokemon(pokemon);
+                break;
+            case "2":
+                pokemon.AlimentarMascote();
+                MenuDetalhesPokemonAdotado(pokemon);
+                InteragirPokemon(pokemon);
+                break;
+            case "3":
+                pokemon.BrincarMascote();
+                MenuDetalhesPokemonAdotado(pokemon);
+                InteragirPokemon(pokemon);
+                break;
+            case "4":
+                pokemon.DormirMascote();
+                MenuDetalhesPokemonAdotado(pokemon);
+                InteragirPokemon(pokemon);
+                break;
+            case "5":
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    public static void MenuDetalhesPokemonAdotado(Pokemon pokemon)
     {
         Console.Clear();
         Console.WriteLine($"Nome do Pokemon: {pokemon.name.ToUpper()}");
@@ -139,15 +182,11 @@ public class PokemonInterface
 
         Console.WriteLine($"Idade: {idade.Minutes} Anos em Pokemon Virtual");
 
-        if (pokemon.VerificarFome())
-            Console.WriteLine($"{pokemon.name.ToUpper()} Está com fome!");
-        else
-            Console.WriteLine($"{pokemon.name.ToUpper()} Está alimentado!");
+        pokemon.VerificarFome();
 
-        if (pokemon.Humor > 5)
-            Console.WriteLine($"{pokemon.name.ToUpper()} Está feliz!");
-        else
-            Console.WriteLine($"{pokemon.name.ToUpper()} Está triste!");
+        pokemon.VerificarHumor();
+
+        pokemon.VerificarSono();
 
         Console.WriteLine("\nHabilidades:");
         foreach (Abilities habilidade in pokemon.abilities)
