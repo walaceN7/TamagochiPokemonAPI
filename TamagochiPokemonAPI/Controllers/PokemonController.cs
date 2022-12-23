@@ -1,4 +1,5 @@
-﻿using TamagochiPokemonAPI.Models;
+﻿using AutoMapper;
+using TamagochiPokemonAPI.Models;
 using TamagochiPokemonAPI.Services;
 using TamagochiPokemonAPI.Views;
 
@@ -6,13 +7,15 @@ namespace TamagochiPokemonAPI.Controllers;
 
 public class PokemonController
 {
-    List<Pokemon> pokemons { get; set; }
+    List<Mascote> mascotes { get; set; }
     PokemonInterface menu { get; set; }
+    MascoteMapping mapping;
+
     int escolha;
 
     public PokemonController()
     {
-        pokemons = new();
+        mascotes = new();
         menu = new();
     }
 
@@ -31,7 +34,7 @@ public class PokemonController
                     opcao = MenuAdocaoIniciar();
                     break;
                 case "2":
-                    menu.MenuConsultarMascotes(pokemons);
+                    menu.MenuConsultarMascotes(mascotes);
                     break;
                 case "3":
                     jogar = false;
@@ -71,23 +74,25 @@ public class PokemonController
 
         while (continua)
         {
-            Pokemon pokemon = new();
+            Mascote mascote = new();
+            mapping = new();
 
             string opcaoSubMenu = menu.MenuSaberMais(opcaoSub);
 
             if (opcaoSubMenu.Equals("1") || opcaoSubMenu.Equals("2"))
             {
-                pokemon = PokemonService.BuscarPokemon(opcaoSub);
+                Pokemon pokemon = PokemonService.BuscarPokemon(opcaoSub);
+                mascote = mapping.mapper.Map<Mascote>(pokemon);
             }
 
             switch (opcaoSubMenu)
             {
                 case "1":
-                    menu.MenuDetalhesPokemon(pokemon);
+                    menu.MenuDetalhesPokemon(mascote);
                     break;
 
                 case "2":
-                    pokemons.Add(pokemon);
+                    mascotes.Add(mascote);
                     menu.SucessoAdocao();
 
                     return "3";
@@ -105,6 +110,6 @@ public class PokemonController
 
     public static bool ValidaNomePokemon(List<string> listaDePokemonsDisponiveis, string nomePokemon)
     {
-        return listaDePokemonsDisponiveis.FirstOrDefault(nome => nome == nomePokemon.ToUpper()) != null ? true : false;
+        return listaDePokemonsDisponiveis.FirstOrDefault(nome => nome == nomePokemon.ToUpper()) != null;
     }
 }

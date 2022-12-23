@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TamagochiPokemonAPI.Models;
-using TamagochiPokemonAPI.Services;
+﻿using TamagochiPokemonAPI.Models;
 
 namespace TamagochiPokemonAPI.Views;
 
@@ -69,15 +63,15 @@ public class PokemonInterface
         return Console.ReadLine().ToUpper();
     }
 
-    public void MenuDetalhesPokemon(Pokemon pokemon)
+    public void MenuDetalhesPokemon(Mascote pokemon)
     {
         Console.Clear();
-        Console.WriteLine($"Nome do Pokemon: {pokemon.name.ToUpper()}");
-        Console.WriteLine($"Altura: {pokemon.height}");
-        Console.WriteLine($"Peso: {pokemon.weight}");
+        Console.WriteLine($"Nome do Pokemon: {pokemon.Nome.ToUpper()}");
+        Console.WriteLine($"Altura: {pokemon.Altura}");
+        Console.WriteLine($"Peso: {pokemon.Peso}");
 
         Console.WriteLine("\nHabilidades:");
-        foreach (Abilities habilidade in pokemon.abilities)
+        foreach (Abilities habilidade in pokemon.Habilidades)
         {
             Console.WriteLine(habilidade.ability.name.ToUpper());
         }
@@ -104,7 +98,7 @@ public class PokemonInterface
         Console.ReadKey();
     }
 
-    public void MenuConsultarMascotes(List<Pokemon> pokemons)
+    public void MenuConsultarMascotes(List<Mascote> pokemons)
     {
         int totalPokemon = pokemons.Count;
 
@@ -121,22 +115,31 @@ public class PokemonInterface
 
         for (int indicePokemon = 0; indicePokemon < totalPokemon; indicePokemon++)
         {
-            Console.WriteLine($"{indicePokemon} - {pokemons[indicePokemon].name.ToUpper()}");
+            Console.WriteLine($"{indicePokemon} - {pokemons[indicePokemon].Nome.ToUpper()}");
         }
 
         Console.WriteLine($"Qual Pokemon você deseja interagir?");
-        InteragirPokemon(pokemons[Convert.ToInt32(Console.ReadLine())]);
+
+        int escolha = int.Parse(Console.ReadLine());
+
+        if (escolha < 0 || escolha >= totalPokemon)
+        {
+            Console.WriteLine("\nOPÇÃO INVÁLIDA, PRESSIONE ENTER PARA VOLTAR");
+            Console.ReadKey();
+            return;
+        }
+        InteragirPokemon(pokemons[escolha]);
     }
 
-    public void InteragirPokemon(Pokemon pokemon)
+    public void InteragirPokemon(Mascote pokemon)
     {
         string opcao = "";
         Console.Clear();
         Console.WriteLine($"{NomeJogador} VOCÊ DESEJA:");
-        Console.WriteLine($"1 - SABER COMO {pokemon.name.ToUpper()} ESTÁ");
-        Console.WriteLine($"2 - ALIMENTAR O(A) {pokemon.name.ToUpper()}");
-        Console.WriteLine($"3 - BRINCAR COM {pokemon.name.ToUpper()}");
-        Console.WriteLine($"4 - FAZER O(A) {pokemon.name.ToUpper()} DORMIR");
+        Console.WriteLine($"1 - SABER COMO {pokemon.Nome.ToUpper()} ESTÁ");
+        Console.WriteLine($"2 - ALIMENTAR O(A) {pokemon.Nome.ToUpper()}");
+        Console.WriteLine($"3 - BRINCAR COM {pokemon.Nome.ToUpper()}");
+        Console.WriteLine($"4 - FAZER O(A) {pokemon.Nome.ToUpper()} DORMIR");
         Console.WriteLine($"5 - VOLTAR");
 
         Console.Write("Sua escolha: ");
@@ -171,12 +174,12 @@ public class PokemonInterface
 
     }
 
-    public static void MenuDetalhesPokemonAdotado(Pokemon pokemon)
+    public static void MenuDetalhesPokemonAdotado(Mascote pokemon)
     {
         Console.Clear();
-        Console.WriteLine($"Nome do Pokemon: {pokemon.name.ToUpper()}");
-        Console.WriteLine($"Altura: {pokemon.height}");
-        Console.WriteLine($"Peso: {pokemon.weight}");
+        Console.WriteLine($"Nome do Pokemon: {pokemon.Nome.ToUpper()}");
+        Console.WriteLine($"Altura: {pokemon.Altura}");
+        Console.WriteLine($"Peso: {pokemon.Peso}");
 
         TimeSpan idade = DateTime.Now.Subtract(pokemon.DataNascimento);
 
@@ -189,7 +192,7 @@ public class PokemonInterface
         pokemon.VerificarSono();
 
         Console.WriteLine("\nHabilidades:");
-        foreach (Abilities habilidade in pokemon.abilities)
+        foreach (Abilities habilidade in pokemon.Habilidades)
         {
             Console.WriteLine(habilidade.ability.name.ToUpper());
         }
