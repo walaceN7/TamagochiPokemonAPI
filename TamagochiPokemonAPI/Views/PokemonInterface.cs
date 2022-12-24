@@ -66,15 +66,9 @@ public class PokemonInterface
     public void MenuDetalhesPokemon(Mascote pokemon)
     {
         Console.Clear();
-        Console.WriteLine($"Nome do Pokemon: {pokemon.Nome.ToUpper()}");
-        Console.WriteLine($"Altura: {pokemon.Altura}");
-        Console.WriteLine($"Peso: {pokemon.Peso}");
+        Console.WriteLine(pokemon.ToString());
 
-        Console.WriteLine("\nHabilidades:");
-        foreach (Abilities habilidade in pokemon.Habilidades)
-        {
-            Console.WriteLine(habilidade.ability.name.ToUpper());
-        }
+        ListarHabilidades(pokemon);
 
         Console.WriteLine("\n\nPrecione ENTER para VOLTAR");
         Console.ReadKey();
@@ -98,10 +92,9 @@ public class PokemonInterface
         Console.ReadKey();
     }
 
-    public void MenuConsultarMascotes(List<Mascote> pokemons)
+    public int MenuConsultarMascotes(List<Mascote> pokemons)
     {
         int totalPokemon = pokemons.Count;
-
 
         Console.Clear();
         Console.WriteLine($"Você possui {totalPokemon} Pokemon adotados.");
@@ -110,7 +103,7 @@ public class PokemonInterface
         {
             Console.WriteLine("\nPRECIONE ENTER PARA VOLTAR");
             Console.ReadKey();
-            return;
+            return -1;
         }
 
         for (int indicePokemon = 0; indicePokemon < totalPokemon; indicePokemon++)
@@ -126,9 +119,10 @@ public class PokemonInterface
         {
             Console.WriteLine("\nOPÇÃO INVÁLIDA, PRESSIONE ENTER PARA VOLTAR");
             Console.ReadKey();
-            return;
+            return -1;
         }
-        InteragirPokemon(pokemons[escolha]);
+
+        return escolha;
     }
 
     public void InteragirPokemon(Mascote pokemon)
@@ -139,8 +133,7 @@ public class PokemonInterface
         Console.WriteLine($"1 - SABER COMO {pokemon.Nome.ToUpper()} ESTÁ");
         Console.WriteLine($"2 - ALIMENTAR O(A) {pokemon.Nome.ToUpper()}");
         Console.WriteLine($"3 - BRINCAR COM {pokemon.Nome.ToUpper()}");
-        Console.WriteLine($"4 - FAZER O(A) {pokemon.Nome.ToUpper()} DORMIR");
-        Console.WriteLine($"5 - VOLTAR");
+        Console.WriteLine($"4 - VOLTAR");
 
         Console.Write("Sua escolha: ");
         opcao = Console.ReadLine();
@@ -153,20 +146,27 @@ public class PokemonInterface
                 break;
             case "2":
                 pokemon.AlimentarMascote();
+
+                if (!pokemon.SaudeMascote())
+                {
+                    GameOver(pokemon);
+                }
+
                 MenuDetalhesPokemonAdotado(pokemon);
                 InteragirPokemon(pokemon);
                 break;
             case "3":
                 pokemon.BrincarMascote();
+
+                if (!pokemon.SaudeMascote())
+                {
+                    GameOver(pokemon);
+                }
+
                 MenuDetalhesPokemonAdotado(pokemon);
                 InteragirPokemon(pokemon);
                 break;
             case "4":
-                pokemon.DormirMascote();
-                MenuDetalhesPokemonAdotado(pokemon);
-                InteragirPokemon(pokemon);
-                break;
-            case "5":
                 break;
             default:
                 break;
@@ -177,27 +177,43 @@ public class PokemonInterface
     public static void MenuDetalhesPokemonAdotado(Mascote pokemon)
     {
         Console.Clear();
-        Console.WriteLine($"Nome do Pokemon: {pokemon.Nome.ToUpper()}");
-        Console.WriteLine($"Altura: {pokemon.Altura}");
-        Console.WriteLine($"Peso: {pokemon.Peso}");
+        Console.WriteLine(pokemon.ToString());
 
         TimeSpan idade = DateTime.Now.Subtract(pokemon.DataNascimento);
 
-        Console.WriteLine($"Idade: {idade.Minutes} Anos em Pokemon Virtual");
+        Console.WriteLine($"Idade: {idade.Minutes} Anos em Pokemon Virtual\n");
 
         pokemon.VerificarFome();
 
         pokemon.VerificarHumor();
 
-        pokemon.VerificarSono();
+        ListarHabilidades(pokemon);
 
+        Console.WriteLine("\n\nPrecione ENTER para VOLTAR");
+        Console.ReadKey();
+    }
+
+    public void GameOver(Mascote mascote)
+    {
+        Console.WriteLine("\n-------------------------------------------------------------");
+        Console.WriteLine("O mascote morreu de " + (mascote.Humor > 0 ? "fome" : "tristeza"));
+
+        Console.WriteLine(@"
+              #####      #     #     #  #######      #######  #     #  #######  ######  
+             #     #    # #    ##   ##  #            #     #  #     #  #        #     # 
+             #         #   #   # # # #  #            #     #  #     #  #        #     # 
+             #  ####  #     #  #  #  #  #####        #     #  #     #  #####    ######  
+             #     #  #######  #     #  #            #     #   #   #   #        #   #   
+             #     #  #     #  #     #  #            #     #    # #    #        #    #  
+              #####   #     #  #     #  #######      #######     #     #######  #     # ");
+    }
+
+    public static void ListarHabilidades(Mascote pokemon)
+    {
         Console.WriteLine("\nHabilidades:");
         foreach (Abilities habilidade in pokemon.Habilidades)
         {
             Console.WriteLine(habilidade.ability.name.ToUpper());
         }
-
-        Console.WriteLine("\n\nPrecione ENTER para VOLTAR");
-        Console.ReadKey();
     }
 }

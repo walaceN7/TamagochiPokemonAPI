@@ -9,7 +9,6 @@ public class Mascote
     public double Peso { get; set; }
     public int Alimentacao { get; set; }
     public int Humor { get; set; }
-    public int Sono { get; set; }
     public DateTime DataNascimento { get; set; }
 
     public Mascote()
@@ -17,7 +16,6 @@ public class Mascote
         Random valorRandomico = new();
         Alimentacao = valorRandomico.Next(2, 10);
         Humor = valorRandomico.Next(2, 10);
-        Sono = valorRandomico.Next(2, 10);
         DataNascimento = DateTime.Now;
     }
 
@@ -38,7 +36,10 @@ public class Mascote
     }
     public void AlimentarMascote()
     {
-        this.Alimentacao++;
+        if (Alimentacao >= 0 && Alimentacao < 10)
+        {
+            this.Alimentacao++;
+        }
     }
 
     public void VerificarHumor()
@@ -63,36 +64,22 @@ public class Mascote
 
     public void BrincarMascote()
     {
-        Humor++;
-        Alimentacao--;
-    }
-
-    public void VerificarSono()
-    {
-        if (Sono <= 3 && Sono > 0)
+        if (Humor >= 0 && Humor < 10)
         {
-            Console.WriteLine($"{Nome.ToUpper()} está com MUITO SONO");
+            Humor++;
         }
-        else if (Sono > 3 && Sono <= 5)
-        {
-            Console.WriteLine($"{Nome.ToUpper()} está com SONO");
-        }
-        else
-        {
-            Console.WriteLine($"{Nome.ToUpper()} está DESCANSADO");
-        }
-
-    }
-
-    public void DormirMascote()
-    {
-        Sono++;
-        Humor++;
         Alimentacao--;
     }
 
     public bool SaudeMascote()
     {
         return (this.Alimentacao > 0 && this.Humor > 0);
+    }
+
+    public override string ToString()
+    {
+        return $"Nome do Pokemon : {Nome.ToUpper()}\n" +
+            $"Altura: {Altura}\n" +
+            $"Peso: {Peso}";
     }
 }

@@ -11,8 +11,6 @@ public class PokemonController
     PokemonInterface menu { get; set; }
     MascoteMapping mapping;
 
-    int escolha;
-
     public PokemonController()
     {
         mascotes = new();
@@ -23,6 +21,7 @@ public class PokemonController
     {
         bool jogar = true;
         string opcao;
+        int escolha;
 
         while (jogar)
         {
@@ -31,10 +30,14 @@ public class PokemonController
             switch (opcao)
             {
                 case "1":
-                    opcao = MenuAdocaoIniciar();
+                    MenuAdocaoIniciar();
                     break;
                 case "2":
-                    menu.MenuConsultarMascotes(mascotes);
+                    escolha = menu.MenuConsultarMascotes(mascotes);
+                    if (escolha >= 0)
+                    {
+                        menu.InteragirPokemon(mascotes[escolha]);
+                    }
                     break;
                 case "3":
                     jogar = false;
